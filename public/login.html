@@ -47,7 +47,35 @@
       </div>
     </nav>
 
-    <div class="container mt-3"></div>
+    <div class="container mt-3">
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="name"
+          id="name-new"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          type="email"
+          class="form-control"
+          placeholder="email"
+          id="email-new"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          type="password"
+          class="form-control"
+          placeholder="pw"
+          id="pw-new"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary" id="register">
+        가입하기
+      </button>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
@@ -80,26 +108,20 @@
 
     <script>
       const db = firebase.firestore();
-      db.collection('product')
-        .get()
-        .then((결과) => {
-          결과.forEach((doc) => {
-            console.log(doc.data());
-            const 템플릿 = `<div class="product">
-        <div
-          class="thumbnail"
-          style="background-image: url('https://via.placeholder.com/350')"
-        ></div>
-        <div class="flex-grow-1 p-4">
-          <h5 class="title">${doc.data().제목}</h5>
-          <p class="date">${doc.data().날짜}</p>
-          <p class="price">${doc.data().가격}원</p>
-          <p class="float-end">❤️0</p>
-        </div>
-      </div>`;
-            $('.container').append(템플릿);
+      const storage = firebase.storage();
+
+      $('#register').click(() => {
+        const 이메일 = $('#email-new').val();
+        const 패스워드 = $('#pw-new').val();
+
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(이메일, 패스워드)
+          .then((result) => {
+            console.log(result);
+            console.log(result.user);
           });
-        });
+      });
     </script>
   </body>
 </html>
